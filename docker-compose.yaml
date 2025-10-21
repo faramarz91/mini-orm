@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    volumes:
+      - ./:/app
+    command: php example.php
+  # add mysql service if you want to test mysql connection:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: isbulnet
+    ports:
+      - "3306:3306"

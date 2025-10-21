@@ -90,6 +90,9 @@ git clone faramarz91/mini-orm
 cd mini-orm
 docker-compose up -d --build
 docker-compose exec app bash
+# or
+docker-compose run --rm -p 8000:8000 app php -S 0.0.0.0:8000 example.php -t /app
+# goto http://localhost:8000 and see the example output
 ```     
 Run tests:
 

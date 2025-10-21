@@ -5,7 +5,7 @@ It provides a simple, fluent, and secure interface for database interactions usi
 
 ###  Key Features
 -  **Fluent Query Builder** — chainable methods like `where()`, `orderBy()`, `limit()`, `get()`
--  **ActiveRecord-style Models** — easy CRUD via `create()`, `find()`, `update()`, `delete()`
+-  **ActiveRecord-style Models** — easy CRUD via `create()`, `find()`, `update()`, `delete()`, `remove()`
 -  **SQL Injection Safe** — all queries are parameterized with PDO
 -  **Relations Support** — `hasMany`, `belongsTo`
 -  **Collections** — iterable, countable, and JSON-serializable results
@@ -33,3 +33,66 @@ $users = User::where('status', '=', 'active')
 foreach ($users as $user) {
     echo $user->name . PHP_EOL;
 }
+```
+
+## create a Model
+```php
+namespace App\Models;
+use MiniORM\Models\Model;
+class User extends Model
+{
+    protected $table = 'users';
+    protected $fillable = ['name', 'email', 'status'];
+}
+```
+
+## use models with relations
+```php
+namespace App\Models;
+use MiniORM\Models\Model;
+class Post extends Model
+{
+    protected $table = 'posts';
+    protected $fillable = ['user_id', 'title', 'body'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+}
+```
+
+## query model
+```php
+use App\Models\Post;
+$posts = Post::where('title', 'like', '%ORM%')->get();
+```
+```php
+use App\Models\User;
+$user = User::find(1);
+$user->update(['email' => 'mfaramarz1991@gmail.com']);
+```
+```php
+use App\Models\User;
+User::delete(1);
+// or
+$user = User::find(2);
+$user->remove();    
+```
+
+
+
+###  Installation
+Install via Docker:
+
+```bash
+git clone faramarz91/mini-orm
+cd mini-orm
+docker-compose up -d --build
+docker-compose exec app bash
+```     
+Run tests:
+
+```bash
+vendor/bin/phpunit
+```
